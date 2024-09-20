@@ -1,6 +1,3 @@
-// const SUPABASE_URL =
-// const API_KEY =
-
 const headers = {
   "Content-Type": "application/json",
   apikey: API_KEY,

@@ -1,4 +1,3 @@
-// netlify/functions/fetchProjects.js
 const fetch = require("node-fetch");
 
 exports.handler = async function (event, context) {
@@ -16,11 +15,20 @@ exports.handler = async function (event, context) {
 
     const data = await response.json();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data.map((project) => project.display_name)),
-    };
+    if (Array.isArray(data)) {
+      const projectNames = data.map((project) => project.display_name);
+      return {
+        statusCode: 200,
+        body: JSON.stringify(projectNames),
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Data is not in expected format" }),
+      };
+    }
   } catch (error) {
+    console.error("Error fetching data from Supabase:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: "Failed to fetch projects" }),
