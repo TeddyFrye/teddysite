@@ -1,6 +1,6 @@
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
-exports.handler = async function (event, context) {
+export async function handler(event, context) {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const API_KEY = process.env.SUPABASE_KEY;
 
@@ -34,4 +34,4 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ error: "Failed to fetch projects" }),
     };
   }
-};
+}
