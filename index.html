@@ -5,5 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Teddy Frye</title>
   </head>
-  <body></body>
+  <body>
+    <div>Here are my projects:</div>
+    <div id="Project-Name"></div>
+
+    <script>
+      async function fetchProjectNames() {
+        try {
+          const response = await fetch("/.netlify/functions/fetchProjects");
+          const projectNames = await response.json();
+
+          const projectNameDiv = document.getElementById("Project-Name");
+          projectNameDiv.innerHTML = projectNames
+            .map((name) => `<p>${name}</p>`)
+            .join("");
+        } catch (error) {
+          console.error("Error fetching project names:", error);
+        }
+      }
+
+      fetchProjectNames();
+    </script>
+  </body>
 </html>
