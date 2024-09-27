@@ -26,14 +26,21 @@ export async function handler(event, context) {
 
     const data = await response.json();
 
-    // Check if the data is an array and if each item has the properties you expect
     if (
       Array.isArray(data) &&
-      data.every((project) => project.display_name && project.image_url)
+      data.every(
+        (project) =>
+          project.display_name &&
+          project.image_url &&
+          project.github_url &&
+          project.url
+      )
     ) {
       const projects = data.map((project) => ({
         displayName: project.display_name,
         imageUrl: project.image_url,
+        githubUrl: project.github_url,
+        siteUrl: project.url,
       }));
       return {
         statusCode: 200,

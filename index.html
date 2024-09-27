@@ -28,17 +28,27 @@
               const response = await fetch("/.netlify/functions/fetchProjects");
               const projects = await response.json();
 
-              console.log("Project data received:", projects); // Log the entire array of projects
-
               if (Array.isArray(projects)) {
                 const projectNameDiv = document.getElementById("Project-Name");
                 projectNameDiv.innerHTML = projects
                   .map((project) => {
                     return `
-              <div class="project-entry" style="background-image: url('${project.imageUrl}');">
-                <p class="project-name">${project.displayName}</p>
-              </div>
-            `;
+										<div class="project-entry" style="background-image: url('${project.imageUrl}');">
+  										<div class="project-info">
+													<a href="#" class="project-name-link" onclick="showFullImage('${project.imageUrl}'); return false;">
+     										 		<p class="project-name">${project.displayName}</p>
+    												</a>
+  											  <div class="project-links">
+      											<a href="${project.siteUrl}" target="_blank">
+       											<img src="public/icons/site-icon.webp" alt="Live Site" class="project-icon"/>
+      											</a>
+      											<a href="${project.githubUrl}" target="_blank">
+       								 			<img src="public/icons/github-icon.svg" alt="GitHub Repo" class="project-icon"/>
+      											</a>
+    											</div>
+  											</div>
+										</div>
+            				`;
                   })
                   .join("");
               } else {
@@ -46,6 +56,36 @@
               }
             } catch (error) {
               console.error("Error fetching project names:", error);
+            }
+          }
+          function showFullImage(imageUrl) {
+            const overlay = document.createElement("div");
+            overlay.id = "image-overlay";
+            overlay.tabIndex = 0;
+            overlay.innerHTML = `<div class="overlay-content" onclick="closeOverlay()"><img src="${imageUrl}" alt="Full Project Image" style="max-width: 100%; height: auto;"></div>`;
+            document.body.appendChild(overlay);
+            overlay.focus();
+          }
+
+          function closeOverlay() {
+            const overlay = document.getElementById("image-overlay");
+            if (overlay) {
+              overlay.remove();
+            }
+          }
+
+          function showFullImage(imageUrl) {
+            const overlay = document.createElement("div");
+            overlay.id = "image-overlay";
+            overlay.tabIndex = 0;
+            overlay.innerHTML = `<div class="overlay-content" onclick="closeOverlay()" onkeydown="handleKeyDown(event)"><img src="${imageUrl}" alt="Full Project Image" style="max-width: 100%; height: auto;"></div>`;
+            document.body.appendChild(overlay);
+            overlay.focus();
+          }
+
+          function handleKeyDown(event) {
+            if (event.key === "Escape") {
+              closeOverlay();
             }
           }
 
