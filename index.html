@@ -21,20 +21,28 @@
     <main>
       <section class="projects">
         <h3>Here are my projects:</h3>
-        <div id="Project-Name"></div>
+        <div id="Project-Name" class="project-container"></div>
         <script>
           async function fetchProjectNames() {
             try {
               const response = await fetch("/.netlify/functions/fetchProjects");
-              const projectNames = await response.json();
+              const projects = await response.json();
 
-              if (Array.isArray(projectNames)) {
+              console.log("Project data received:", projects); // Log the entire array of projects
+
+              if (Array.isArray(projects)) {
                 const projectNameDiv = document.getElementById("Project-Name");
-                projectNameDiv.innerHTML = projectNames
-                  .map((name) => `<p>${name}</p>`)
+                projectNameDiv.innerHTML = projects
+                  .map((project) => {
+                    return `
+              <div class="project-entry" style="background-image: url('${project.imageUrl}');">
+                <p class="project-name">${project.displayName}</p>
+              </div>
+            `;
+                  })
                   .join("");
               } else {
-                console.error("Unexpected data format:", projectNames);
+                console.error("Unexpected data format:", projects);
               }
             } catch (error) {
               console.error("Error fetching project names:", error);

@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+
 export async function handler(event, context) {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const API_KEY = process.env.SUPABASE_KEY;
@@ -25,17 +26,30 @@ export async function handler(event, context) {
 
     const data = await response.json();
 
-    if (Array.isArray(data)) {
-      const projectNames = data.map((project) => project.display_name);
+    // Check if the data is an array and if each item has the properties you expect
+    if (
+      Array.isArray(data) &&
+      data.every((project) => project.display_name && project.image_url)
+    ) {
+      const projects = data.map((project) => ({
+        displayName: project.display_name,
+        imageUrl: project.image_url,
+      }));
       return {
         statusCode: 200,
-        body: JSON.stringify(projectNames),
+        body: JSON.stringify(projects),
       };
     } else {
-      console.error("Unexpected data format:", data);
+      console.error(
+        "Unexpected data format or missing project properties:",
+        data
+      );
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: "Data is not in expected format" }),
+        body: JSON.stringify({
+          error:
+            "Data is not in expected format or missing necessary project properties",
+        }),
       };
     }
   } catch (error) {
