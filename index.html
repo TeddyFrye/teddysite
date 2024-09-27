@@ -3,32 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/styles.css" />
     <title>Teddy Frye</title>
   </head>
   <body>
-    <div>Here are my projects:</div>
-    <div id="Project-Name"></div>
+    <header>
+      <img
+        src="public/images/teddyprofile1.png"
+        alt="Profile Picture"
+        class="profile-pic"
+      />
+      <div class="title">
+        <h1>Teddy Frye</h1>
+        <h2>Web & UX Designer, JavaScript Enthusiast, Forever DM</h2>
+      </div>
+    </header>
+    <main>
+      <section class="projects">
+        <h3>Here are my projects:</h3>
+        <div id="Project-Name"></div>
+        <script>
+          async function fetchProjectNames() {
+            try {
+              const response = await fetch("/.netlify/functions/fetchProjects");
+              const projectNames = await response.json();
 
-    <script>
-      async function fetchProjectNames() {
-        try {
-          const response = await fetch("/.netlify/functions/fetchProjects");
-          const projectNames = await response.json();
-
-          if (Array.isArray(projectNames)) {
-            const projectNameDiv = document.getElementById("Project-Name");
-            projectNameDiv.innerHTML = projectNames
-              .map((name) => `<p>${name}</p>`)
-              .join("");
-          } else {
-            console.error("Unexpected data format:", projectNames);
+              if (Array.isArray(projectNames)) {
+                const projectNameDiv = document.getElementById("Project-Name");
+                projectNameDiv.innerHTML = projectNames
+                  .map((name) => `<p>${name}</p>`)
+                  .join("");
+              } else {
+                console.error("Unexpected data format:", projectNames);
+              }
+            } catch (error) {
+              console.error("Error fetching project names:", error);
+            }
           }
-        } catch (error) {
-          console.error("Error fetching project names:", error);
-        }
-      }
 
-      fetchProjectNames();
-    </script>
+          fetchProjectNames();
+        </script>
+      </section>
+      <section class="bio">
+        <h3>My History</h3>
+        <p>
+          I only began studying Code in late 2021, after finding myself lost in
+          the world of administrative services.
+        </p>
+      </section>
+    </main>
   </body>
 </html>

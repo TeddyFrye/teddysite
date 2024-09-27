@@ -1,0 +1,51 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #5f0a0a; /* dark brown background */
+}
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #5f0a0a; /* lighter brown */
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.title h1, .title h2 {
+  color: #FFF;
+  margin: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+.projects, .bio {
+  background-color: #d9a3a3; /* light brown */
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.projects h3, .bio h3 {
+  color: #5b1818;
+}
+
+.projects div, .bio p {
+  color: #FFFFFF;
+}
+
+#Project-Name p {
+  background-color: #5b1818; /* darker shade for projects */
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+}

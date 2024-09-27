@@ -1,5 +1,4 @@
 import fetch from "node-fetch";
-
 export async function handler(event, context) {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const API_KEY = process.env.SUPABASE_KEY;
@@ -13,6 +12,17 @@ export async function handler(event, context) {
       },
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("HTTP error", response.status, errorText);
+      return {
+        statusCode: response.status || 500,
+        body: JSON.stringify({
+          error: `Failed to fetch projects: ${response.status} ${errorText}`,
+        }),
+      };
+    }
+
     const data = await response.json();
 
     if (Array.isArray(data)) {
@@ -22,6 +32,7 @@ export async function handler(event, context) {
         body: JSON.stringify(projectNames),
       };
     } else {
+      console.error("Unexpected data format:", data);
       return {
         statusCode: 500,
         body: JSON.stringify({ error: "Data is not in expected format" }),
